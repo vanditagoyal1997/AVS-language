@@ -7,7 +7,7 @@ EITHER(a==1)[[
 b=0
 ]]
 OR[[
-b=1
+b='hi'
 ]]
 func HI(b)[[
 s=1
