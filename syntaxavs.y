@@ -79,6 +79,7 @@ term:
 	'(' relationexp ')'
 	| INT 
 	| ID
+	| STRING
 	;
 endline: 
 	endline ENDL
