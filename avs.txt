@@ -1,0 +1,99 @@
+AVS Version 1
+
+1)<stmt> --> START <endline><statement_list><endline>END
+2)<endline> --> <endline>"\n"|"\n"
+3)<statement_list> --> <statement>|<statement><statement_list>
+4) <statement>--><asst>|<conditional>|<loop>|<function>|<ip>|<opu>
+5)<string> --><alpha><string>|<digit><string>|<spl char><string>|<spl char>|<digit>|<alpha>|<NULL>
+6)<alpha> --> A|B|.........|Z|a|......|z
+7)<function> -->func<func id>"("<parameter>")"[["<statement_list>"]]"
+8)<parameter> --> <term><parameter>|<term>|<NULL>
+9)<NULL> -->phi
+10)<funcid> --> <alpha1><funcid>|<funcid><spl char>|<alpha1>
+11)<alpha1> --> A|B|C|D|E|F|G|H|......
+12)<spl char> --> #|@|!|/|$
+13)<ip> --><id>="READ:""[["<string>"]]"
+14)<opu> -->"DISPLAY:""[["<string>"]]"
+15)<id> --><alpha2><id>|<id><digit>|<alpha2>
+16)<alpha2>--> _|a|b|c|d|e|f...|z
+17)<digit> -->0|1|2|3|4|5|6|7|8|9
+18)<asst> --><id>=<relationexp>
+19)<relationexp>--> <relationexp><relop><arithexp>|<arithexp>
+20)<arithexp>--><arithexp><arithop><term>|<term>
+21)<term>--> "("relationexp")"|<int>|<float>|<id>|<string>
+22)<arithop> --> ^|-|+|*|/|
+23)<relop>--> |<|<=|==|>=
+24)<int> --><int><digit>|<digit>
+25)<float> --><int>.<int>
+26)<conditional>-->EITHER"("<relationexp>")"":[["<statement_list>"]]"|OR:"[["<statement_list>"]]"
+27)<loop>-->REPEAT_TILL"("<relationexp>")"":[["<statement_list>"]]"
+AVS Version 2
+1)<stmt> --> START <endline><statement_list><endline>END
+2)<endline> --> <endline>"\n"|"\n"
+3)<statement_list> --> <statement>|<statement><statement_list>
+4) <statement>--><asst>|<conditional>|<loop>|<function>|<ip>|<opu>
+5)<string> -->(')(A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z)*(0|1|2|3|4|5|6|7|8|9)*(#|$|@|!)*(')
+6)<function> -->"func"<func id>"("<parameter>")"[["<statement_list>"]]"
+7)<parameter> --> <term><parameter>|<term>|<NULL>
+8)<NULL> -->phi
+9)<funcid>--> (A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z)
+(A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z)*
+(#|$|@|!)*
+10)<ip> --><id>="READ:""[["<string>"]]"
+11)<opu> -->"DISPLAY:""[["<string>"]]"
+12)<id> -->(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z)  (a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z)*(0|1|2|3|4|5|6|7|8|9)*
+13)<asst> --><id>=<relationexp>
+14)<relationexp>-->
+<relationexp><relop><arithexp>|<arithexp>
+15)<arithexp>--><arithexp><arithop><term>|<term>
+16)<term>--> "("relationexp")"|<int>|<float>|<id>|<string>
+17)<arithop> --> ^|-|+|*|/|
+18)<relop>--> |<|<=|==|>=
+19)<int> --><int><digit>|<digit>
+20)<float> --><int>.<int>
+21)<conditional>-->EITHER"("<relationexp>")"":[["<statement_list>"]]"|"OR:""[["<statement_list>"]]"
+22)<loop>-->REPEAT_TILL"("<relationexp>")"":[["<statement_list>"]]"
+
+
+
+
+CHECKING CORRECT PROGRAM
+
+program:
+START
+a=2
+b=a+2
+END
+<stmt> -->START<endline> <statement_list><endline>END
+ START\n<statement><statement_list><endline>END
+ START\n<asst><statement_list>END
+ START\n*a=<arithexp><endline><statement_list >
+<endline>END
+START \n *a=*<int><endline><statement_list><endline>END START\n *a=*2*\n<statement_list><endline>END
+START\n *a=*2*\n<asst><endline>END
+START\n *a=*2*\n<id>=<relationexp><endline>END
+START\n *a=*2*\n<id>=<arithexp><endline>END
+START \n *a=*2*\n *b=<arithexp><arithop><term><endline> END           
+START\n *a=*2\n *b=<term><arithop><term><endline>  END
+START\n *a=*2\n *b=<id><arithop><term><endline>END
+START\n *a=*2\n *b=*a+<term><endline>END
+START\n *a=*2\n *b=*a+<int><endline>END
+START\n *a=*2\n *b=*a+1\n END
+
+CHECKING INCORRECT PROGRAM
+
+Program:
+START
+2abc=20
+END
+<s>-->START<endline><statement_list><endline>END
+START\n<statement_list><endline>END
+START\n<asst><endline>END
+START\n<id>=<Relationexp><endline>END
+START\n<id><digit>=<relationexp><endline>END
+Hence,invalid
+
+          
+                
+
+
